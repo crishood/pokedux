@@ -5,9 +5,10 @@ import "./App.css";
 import logo from "./statics/logo.svg";
 import { useEffect, useState } from "react";
 import { getPokemon } from "./api";
+import { connect } from "react-redux";
+import { setPokemons as setPokemonsActions } from "./actions";
 
-function App() {
-  const [pokemons, setPokemons] = useState([]);
+function App({ pokemons, setPokemons }) {
   useEffect(() => {
     const fetchPokemons = async () => {
       const pokemonRes = await getPokemon();
@@ -30,4 +31,12 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  pokemons: state.pokemons,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setPokemons: (value) => dispatch(setPokemonsActions(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
